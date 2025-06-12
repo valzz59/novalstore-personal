@@ -1,0 +1,140 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barang Premium</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: move 30s linear infinite;
+      z-index: -1;
+    }
+    @keyframes move {
+      0% { background-position: 0 0; }
+      100% { background-position: 100px 100px; }
+    }
+    .container {
+      background: #1e1e1e;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 400px;
+      margin: 60px auto 30px auto;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    }
+    h2 {
+      margin-bottom: 10px;
+      text-align: center;
+      color: #00ffcc;
+    }
+    label, select {
+      display: block;
+      margin-bottom: 15px;
+      width: 100%;
+    }
+    select {
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      background: #333;
+      color: #fff;
+    }
+    .button {
+      width: calc(100% - 0px);
+      text-align: center;
+      padding: 14px;
+      background: #25d366;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 16px;
+      display: block;
+      margin: 30px auto 10px auto;
+      box-sizing: border-box;
+    }
+    .button:hover {
+      background: #20c05c;
+    }
+    .credit {
+      text-align: center;
+      font-size: 12px;
+      color: #888;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="background"></div>
+  <div class="container">
+    <h2>FORM NOVAL STORE</h2><label for="kategori">• Tersedia Barang:</label>
+<select id="kategori">
+  <option value="APK Premium">APK Premium</option>
+  <option value="Akun Game">Akun Game</option>
+  <option value="Suntik Sosmed">Suntik Sosmed</option>
+  <option value="Jasa Unbanned WhatsApp">Jasa Unbanned WhatsApp</option>
+</select>
+
+<label for="barang">• List Barang:</label>
+<select id="barang"></select>
+
+<label for="via">• Chat via:</label>
+<select id="via">
+  <option value="whatsapp">WhatsApp</option>
+</select>
+
+<a class="button" id="waLink" href="#" target="_blank">Send Message</a>
+<div class="credit">Create by NOVAL STORE</div>
+
+  </div>  <script>
+    const kategori = document.getElementById('kategori');
+    const barang = document.getElementById('barang');
+    const waLink = document.getElementById('waLink');
+
+    const barangList = {
+      "APK Premium": ["Alight Motion", "KineMaster", "CapCut Pro"],
+      "Akun Game": ["Free Fire", "Mobile Legends"],
+      "Suntik Sosmed": ["Followers IG", "Followers Tiktok", "Like IG", "Like Tiktok"],
+      "Jasa Unbanned WhatsApp": ["Permanen hard", "Permanen easy", "Permanen tinjau", "Spam tinjau"]
+    };
+
+    function updateBarangList() {
+      const selectedKategori = kategori.value;
+      barang.innerHTML = '';
+      barangList[selectedKategori].forEach(item => {
+        const option = document.createElement('option');
+        option.value = item;
+        option.textContent = item;
+        barang.appendChild(option);
+      });
+      updateLink();
+    }
+
+    function updateLink() {
+      const nomor = '6285783684259'; // Ganti dengan nomor WA asli kamu
+      const teks = `bang beli ${kategori.value.toLowerCase()} ${barang.value}`;
+      const url = `https://wa.me/${nomor}?text=${encodeURIComponent(teks)}`;
+      waLink.href = url;
+    }
+
+    kategori.addEventListener('change', updateBarangList);
+    barang.addEventListener('change', updateLink);
+    document.addEventListener('DOMContentLoaded', () => {
+      updateBarangList();
+    });
+  </script></body>
+</html>
