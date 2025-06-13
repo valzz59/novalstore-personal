@@ -40,20 +40,20 @@
       text-align: center;
       color: #00ffcc;
     }
-    label, select {
+    label, select, input {
       display: block;
       margin-bottom: 15px;
       width: 100%;
     }
-    select {
+    select, input[type="text"] {
       padding: 8px;
       border-radius: 6px;
       border: none;
       background: #333;
       color: #fff;
     }
-    .button {
-      width: calc(100% - 0px);
+    .button, .btn-secondary {
+      width: 100%;
       text-align: center;
       padding: 14px;
       background: #25d366;
@@ -67,8 +67,11 @@
       margin: 30px auto 10px auto;
       box-sizing: border-box;
     }
-    .button:hover {
-      background: #20c05c;
+    .btn-secondary {
+      background: #ffae00;
+    }
+    .button:hover, .btn-secondary:hover {
+      opacity: 0.9;
     }
     .credit {
       text-align: center;
@@ -76,65 +79,242 @@
       color: #888;
       margin-top: 20px;
     }
+    .music-controls {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .music-controls button {
+      background: #444;
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      margin: 5px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .music-controls button:hover {
+      background: #666;
+    }
+    .hidden {
+      display: none;
+    }
+    .qr-section img {
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+    .timer {
+      text-align: center;
+      font-size: 14px;
+      color: #ff4e4e;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
-  <div class="background"></div>
-  <div class="container">
-    <h2>FORM NOVAL STORE</h2><label for="kategori">• Tersedia Barang:</label>
-<select id="kategori">
-  <option value="APK Premium">APK Premium</option>
-  <option value="Akun Game">Akun Game</option>
-  <option value="Suntik Sosmed">Suntik Sosmed</option>
-  <option value="Jasa Unbanned WhatsApp">Jasa Unbanned WhatsApp</option>
-</select>
+<div class="background"></div>
+<div class="container" id="page1">
+  <h2>FORM NOVAL STORE</h2>
+  <label for="kategori">• Tersedia Barang:</label>
+  <select id="kategori"></select><label for="barang">• List Barang:</label> <select id="barang"></select>
 
-<label for="barang">• List Barang:</label>
-<select id="barang"></select>
+<label for="via">• Chat via:</label> <select id="via"> <option value="whatsapp">WhatsApp</option> </select>
 
-<label for="via">• Chat via:</label>
-<select id="via">
-  <option value="whatsapp">WhatsApp</option>
-</select>
+<a class="button" id="waLink" href="#" target="_blank">Send Message</a> <button class="btn-secondary" onclick="showPage('page2')">ORDER OTOMATIS</button>
 
-<a class="button" id="waLink" href="#" target="_blank">Send Message</a>
-<div class="credit">Create by NOVAL STORE</div>
+  <div class="music-controls">
+    <p><strong>SILAHKAN PILIH LAGU VELOCITY A6 NYA 🤙</strong></p>
+    <button onclick="playMusic()">▶️ PLAY</button>
+    <button onclick="pauseMusic()">⏸️ STOP</button>
+    <button onclick="prevMusic()">⏮️ SEBELUMNYA</button>
+    <button onclick="nextMusic()">⏭️ NEXT LAGU</button>
+  </div>  <div class="credit">Created by NOVAL STORE</div>
+</div><div class="container hidden" id="page2">
+  <h2>ORDER OTOMATIS</h2>
+  <label for="kategori2">• Tersedia Barang:</label>
+  <select id="kategori2"></select><label for="barang2">• List Barang:</label> <select id="barang2"></select>
 
-  </div>  <script>
-    const kategori = document.getElementById('kategori');
-    const barang = document.getElementById('barang');
-    const waLink = document.getElementById('waLink');
+<label for="pembayaran">• Pilih Payment:</label> <select id="pembayaran"> <option value="dana">Dana</option> <option value="ovo">OVO</option> <option value="gopay">Gopay</option> <option value="qris">QRIS Allpay (Minta Admin)</option> </select>
 
-    const barangList = {
-      "APK Premium": ["Alight Motion", "KineMaster", "CapCut Pro"],
-      "Akun Game": ["Free Fire", "Mobile Legends"],
-      "Suntik Sosmed": ["Followers IG", "Followers Tiktok", "Like IG", "Like Tiktok"],
-      "Jasa Unbanned WhatsApp": ["Permanen hard", "Permanen easy", "Permanen tinjau", "Spam tinjau"]
-    };
+<label for="whatsappBuyer">• Nomor WhatsApp Anda:</label> <input type="text" id="whatsappBuyer" placeholder="Contoh: 6281234567890">
 
-    function updateBarangList() {
-      const selectedKategori = kategori.value;
-      barang.innerHTML = '';
-      barangList[selectedKategori].forEach(item => {
-        const option = document.createElement('option');
-        option.value = item;
-        option.textContent = item;
-        barang.appendChild(option);
-      });
-      updateLink();
+<button class="button" onclick="handleNextStep()">Selanjutnya</button> <button class="btn-secondary" onclick="showPage('page1')">⬅️ Kembali</button>
+
+  <div class="credit">Created by NOVAL STORE</div>
+</div><div class="container hidden" id="page3">
+  <h2>Instruksi Pembayaran</h2>
+  <p id="noteBayar"></p>
+  <div class="qr-section">
+    <img id="qrImage" src="" alt="QR Code Pembayaran">
+  </div>
+  <div class="timer" id="countdown">Waktu pembayaran: 10:00</div>
+  <p style="margin-top: 20px;">Setelah transfer, silakan kirim bukti transfer dan detail pesanan Anda ke WhatsApp admin:</p>
+  <a class="button" id="kirimManual" target="_blank">Kirim ke Admin</a>
+  <button class="btn-secondary" onclick="showPage('page2')">⬅️ Kembali</button>
+  <div class="credit">Created by NOVAL STORE</div>
+</div><audio id="player" src="https://files.catbox.moe/q7o4g7.mp3" loop></audio>
+
+<script>
+const kategori = document.getElementById('kategori');
+const kategori2 = document.getElementById('kategori2');
+const barang = document.getElementById('barang');
+const barang2 = document.getElementById('barang2');
+const waLink = document.getElementById('waLink');
+const kirimManual = document.getElementById('kirimManual');
+const countdown = document.getElementById('countdown');
+const qrImage = document.getElementById('qrImage');
+
+const hargaManual = {
+  "Permanen hard": "Rp 80.000",
+  "Permanen easy": "Rp 50.000",
+  "Permanen tinjau": "Rp 20.000",
+  "Spam tinjau": "Rp 20.000",
+  "Free Fire": "Rp ?",
+  "Mobile Legends": "Rp ?",
+  "Followers 1K IG": "Rp 20.000",
+  "Followers 100 IG": "Rp 10.000",
+  "Like 1k IG": "Rp 5.000",
+  "Followers 100 Tiktok": "Rp 15.000",
+  "Followers 1k Tiktok": "Rp 40.000",
+  "Like 1k Tiktok": "Rp 5.000",
+  "Alight Motion 1 Tahun": "Rp 5.000",
+  "Alight Motion 1 Bulan": "Rp 2.000",
+  "KineMaster": "Rp 10.000",
+  "CapCut Pro": "Rp 20.000"
+};
+
+const hargaOtomatis = {
+  "Followers 1K IG": "Rp 20.000",
+  "Followers 100 IG": "Rp 10.000",
+  "Like 1k IG": "Rp 5.000",
+  "Followers 100 Tiktok": "Rp 15.000",
+  "Followers 1k Tiktok": "Rp 40.000",
+  "Like 1k Tiktok": "Rp 5.000",
+  "Alight Motion 1 Tahun": "Rp 5.000",
+  "Aligh Motion 1 Bulan": "Rp 2.000",
+  "KineMaster": "Rp 10.000",
+  "CapCut Pro": "Rp 20.000"
+};
+
+const barangManual = {
+  "Jasa Unbanned WhatsApp": ["Permanen hard", "Permanen easy", "Permanen tinjau", "Spam tinjau"],
+  "Akun Game": ["Free Fire", "Mobile Legends"],
+  "APK Premium": ["Alight Motion 1 Tahun", "Alight Motion 1 Bulan", "KineMaster", "CapCut Pro"],
+  "Suntik Sosmed": ["Followers 1K IG", "Followers 100 IG", "Followers 1k Tiktok", "Followers 100 Tiktok", "Like 1k IG", "Like 1k Tiktok"]
+};
+
+const barangOtomatis = {
+  "APK Premium": ["Alight Motion 1 Tahun", "Aligh Motion 1 Bulan", "KineMaster", "CapCut Pro"],
+  "Suntik Sosmed": ["Followers 1K IG", "Followers 100 IG", "Followers 1k Tiktok", "Followers 100 Tiktok", "Like 1k IG", "Like 1k Tiktok"]
+};
+
+const qrImages = {
+  dana: "https://files.catbox.moe/ln8bp1.jpg",
+  gopay: "https://files.catbox.moe/gngyg0.jpg"
+};
+
+function updateBarangList(selectKategori, selectBarang, list, hargaMap) {
+  const selectedKategori = selectKategori.value;
+  selectBarang.innerHTML = '';
+  list[selectedKategori]?.forEach(item => {
+    const option = document.createElement('option');
+    option.value = item;
+    option.textContent = `${item} - ${hargaMap[item] || 'Rp ?'}`;
+    selectBarang.appendChild(option);
+  });
+}
+
+function updateLink() {
+  const nomor = '6285783684259';
+  const teks = `bang beli ${kategori.value.toLowerCase()} ${barang.value}`;
+  const url = `https://wa.me/${nomor}?text=${encodeURIComponent(teks)}`;
+  waLink.href = url;
+}
+
+function showPage(id) {
+  ['page1','page2','page3'].forEach(page => {
+    document.getElementById(page).classList.add('hidden');
+  });
+  document.getElementById(id).classList.remove('hidden');
+}
+
+function handleNextStep() {
+  const metode = document.getElementById('pembayaran').value;
+  const selected = barang2.value;
+  const harga = hargaOtomatis[selected] || "";
+  const buyerNumber = document.getElementById('whatsappBuyer').value.trim();
+
+  if (!buyerNumber.match(/^628\d{7,}$/)) {
+    alert('Masukkan nomor WhatsApp yang valid!');
+    return;
+  }
+
+  if (metode === 'qris' || metode === 'ovo') {
+    alert(`Untuk ${metode.toUpperCase()}, silakan hubungi admin langsung.`);
+    window.open(`https://wa.me/6285783684259?text=Halo%20Admin,%20saya%20mau%20pembayaran%20${metode.toUpperCase()}%20untuk%20${selected}`, '_blank');
+    return;
+  }
+
+  document.getElementById('noteBayar').textContent = `Silahkan scan ini ke ${metode.toUpperCase()} dan transfer sebesar ${harga}\nNo. WA Anda: ${buyerNumber}`;
+  qrImage.src = qrImages[metode] || '';
+
+  const linkManual = `https://wa.me/6285783684259?text=${encodeURIComponent(`Halo Admin,Saya sudah transfer untuk pembelian ${selected} No WA saya: ${buyerNumber} Berikut bukti transfer:`)}`;
+  kirimManual.href = linkManual;
+
+  startCountdown(10 * 60);
+  showPage('page3');
+}
+
+function startCountdown(duration) {
+  let timer = duration;
+  const interval = setInterval(() => {
+    const minutes = String(Math.floor(timer / 60)).padStart(2, '0');
+    const seconds = String(timer % 60).padStart(2, '0');
+    countdown.textContent = `Waktu pembayaran: ${minutes}:${seconds}`;
+
+    if (--timer < 0) {
+      clearInterval(interval);
+      countdown.textContent = "⏰ Waktu habis! Silakan order ulang.";
     }
+  }, 1000);
+}
 
-    function updateLink() {
-      const nomor = '6285809407332'; // Ganti dengan nomor WA asli kamu
-      const teks = `bang beli ${kategori.value.toLowerCase()} ${barang.value}`;
-      const url = `https://wa.me/${nomor}?text=${encodeURIComponent(teks)}`;
-      waLink.href = url;
-    }
+const player = document.getElementById('player');
+const playlist = [
+  "https://files.catbox.moe/q7o4g7.mp3",
+  "https://files.catbox.moe/wccq5y.mp3",
+  "https://files.catbox.moe/ylgcx9.m4a"
+];
+let currentTrack = 0;
+function playMusic() { player.src = playlist[currentTrack]; player.play(); }
+function pauseMusic() { player.pause(); }
+function nextMusic() { currentTrack = (currentTrack + 1) % playlist.length; playMusic(); }
+function prevMusic() { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; playMusic(); }
 
-    kategori.addEventListener('change', updateBarangList);
-    barang.addEventListener('change', updateLink);
-    document.addEventListener('DOMContentLoaded', () => {
-      updateBarangList();
-    });
-  </script></body>
+// Init
+kategori.addEventListener('change', () => {
+  updateBarangList(kategori, barang, barangManual, hargaManual);
+  updateLink();
+});
+barang.addEventListener('change', updateLink);
+kategori2.addEventListener('change', () => updateBarangList(kategori2, barang2, barangOtomatis, hargaOtomatis));
+
+document.addEventListener('DOMContentLoaded', () => {
+  Object.keys(barangManual).forEach(kat => {
+    const opt = document.createElement('option');
+    opt.value = kat;
+    opt.textContent = kat;
+    kategori.appendChild(opt);
+  });
+  Object.keys(barangOtomatis).forEach(kat => {
+    const opt = document.createElement('option');
+    opt.value = kat;
+    opt.textContent = kat;
+    kategori2.appendChild(opt);
+  });
+  updateBarangList(kategori, barang, barangManual, hargaManual);
+  updateBarangList(kategori2, barang2, barangOtomatis, hargaOtomatis);
+  updateLink();
+});
+</script></body>
 </html>
