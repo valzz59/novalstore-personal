@@ -258,7 +258,7 @@ function handleNextStep() {
   document.getElementById('noteBayar').textContent = `Silahkan scan ini ke ${metode.toUpperCase()} dan transfer sebesar ${harga}\nNo. WA Anda: ${buyerNumber}`;
   qrImage.src = qrImages[metode] || '';
 
-  const linkManual = `https://wa.me/6285783684259?text=${encodeURIComponent(`Halo Admin,Saya sudah transfer untuk pembelian ${selected} No WA saya: ${buyerNumber} Berikut bukti transfer:`)}`;
+  const linkManual = `https://wa.me/6285809407332?text=${encodeURIComponent(`Halo Admin,Saya sudah transfer untuk pembelian ${selected} No WA saya: ${buyerNumber} Berikut bukti transfer:`)}`;
   kirimManual.href = linkManual;
 
   startCountdown(10 * 60);
